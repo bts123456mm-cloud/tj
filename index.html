@@ -14,13 +14,16 @@ body {
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
-    transition: background 0.5s ease; /* 부드럽게 바뀌도록 */
+    transition: background 0.5s ease;
+    overflow: hidden;
 }
 
 .container {
     background: rgba(255,255,255,0.1);
     padding: 40px;
     border-radius: 20px;
+    z-index: 10;
+    position: relative;
 }
 
 button {
@@ -33,11 +36,27 @@ button {
     color: white;
 }
 
-/* 버튼 색상 */
 .happy { background: #feca57; }
 .sad { background: #54a0ff; }
 .angry { background: #ff6b6b; }
 .calm { background: #1dd1a1; }
+
+.note {
+    position: absolute;
+    pointer-events: none;
+    animation: floatUp linear;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px) scale(0.5);
+        opacity: 0;
+    }
+}
 </style>
 </head>
 
@@ -56,11 +75,12 @@ button {
 
 <script>
 const music = document.getElementById("music");
+let noteInterval;
 
 function playMood(mood) {
     if (mood === "happy") {
-        music.src = "happy.mp3"; // happy 음악 파일 경로
-        document.body.style.backgroundImage = "url('happy.jpg')"; // happy 이미지 파일 경로
+        music.src = "happy.mp3";
+        document.body.style.backgroundImage = "url('happy.jpg')";
     }
     else if (mood === "sad") {
         music.src = "sad.mp3";
@@ -75,12 +95,41 @@ function playMood(mood) {
         document.body.style.backgroundImage = "url('calm.jpg')";
     }
 
-    // 공통 스타일
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center";
     document.body.style.backgroundRepeat = "no-repeat";
 
     music.play();
+
+    if (noteInterval) clearInterval(noteInterval);
+
+    noteInterval = setInterval(() => {
+        createNote();
+    }, 400); // 0.4초마다 음표 생성
+}
+
+function createNote() {
+    const note = document.createElement("img");
+    note.src = "note.png";
+    note.classList.add("note");
+
+    // 랜덤 가로 위치
+    note.style.left = Math.random() * (window.innerWidth - 100) + "px";
+
+    // 랜덤 크기 50~120px
+    const size = 50 + Math.random() * 70;
+    note.style.width = size + "px";
+    note.style.height = size + "px";
+
+    // 랜덤 속도 3~6초
+    const duration = 3 + Math.random() * 3;
+    note.style.animationDuration = duration + "s";
+
+    document.body.appendChild(note);
+
+    note.addEventListener("animationend", () => {
+        note.remove();
+    });
 }
 </script>
 </body>
