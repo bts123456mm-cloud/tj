@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>우주 음악 플레이어</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            /* 🌌 우주 배경 */
+            background: radial-gradient(circle at center, #1a1a2e, #000);
+            color: white;
+            font-family: Arial;
+            background: url('space.jpg') no-repeat center center;
+            background-size: cover;
+
+        }
+
+        .player {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #6c5ce7;
+            color: white;
+            cursor: pointer;
+
+        }
+
+        button:hover {
+            background: #a29bfe;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="player">
+        <h2>🌌 Space Music</h2>
+
+        <audio id="music" src="music.mp3"></audio>
+
+        <br>
+        <button onclick="playMusic()">재생</button>
+        <button onclick="pauseMusic()">정지</button>
+    </div>
+
+    <script>
+        const music = document.getElementById("music");
+
+        function playMusic() {
+            music.play();
+        }
+
+        function pauseMusic() {
+            music.pause();
+        }
+    </script>
+
+</body>
+</html>
